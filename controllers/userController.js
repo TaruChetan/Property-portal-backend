@@ -1,10 +1,10 @@
 import User from "../models/user.js";
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 class UserController {
   static userRegistration = async (req, res) => {
     try {
-      const { name, email, username, password } = req.body;
+      const { role, name, email, username, password } = req.body;
       const user = await User.findOne({ email: email });
       const user1 = await User.findOne({ username: username });
       if (user) {
@@ -15,6 +15,7 @@ class UserController {
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
         const doc = new User({
+          role: role,
           name: name,
           email: email,
           username: username,
